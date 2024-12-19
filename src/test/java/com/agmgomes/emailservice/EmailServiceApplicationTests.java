@@ -1,4 +1,4 @@
-package com.agmgomes.email_service;
+package com.agmgomes.emailservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
