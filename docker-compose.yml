@@ -1,0 +1,54 @@
+services:
+  backend:
+    build: .
+    container_name: email-backend-service
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/emaildb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=admin
+      - SPRING_RABBITMQ_PASSWORD=password
+    depends_on:
+      rabbitmq:
+        condition: service_started
+      database:
+        condition: service_healthy
+        restart: true
+    ports:
+      - "8080:8080"
+
+  rabbitmq:
+    image: rabbitmq:4.0.5-management-alpine
+    container_name: rabbitmq-email-service
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=password
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
+  database:
+    image: postgres:alpine
+    container_name: postgres-email-database
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=emaildb
+    volumes:
+      - postgres_data:/var/lib/postgresql/postgres_data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d emaildb"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+      
+volumes:
+  rabbitmq_data:
+  postgres_data:
