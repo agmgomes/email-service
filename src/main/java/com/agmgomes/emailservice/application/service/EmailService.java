@@ -52,8 +52,10 @@ public class EmailService implements
 
     @Override
     public EmailMessage saveEmail(EmailMessage emailMessage) {
-        log.info("Email with id: {} saved into the database.", emailMessage.getId());
-        return this.emailDatabasePort.saveEmail(emailMessage);
+        EmailMessage savedEmail = this.emailDatabasePort.saveEmail(emailMessage);
+        log.info("Email with id: {} saved into the database.", savedEmail.getId());
+        
+        return savedEmail;
     }
 
     @Override
