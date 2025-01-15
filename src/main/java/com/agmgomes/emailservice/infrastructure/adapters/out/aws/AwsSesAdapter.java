@@ -1,6 +1,5 @@
 package com.agmgomes.emailservice.infrastructure.adapters.out.aws;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.agmgomes.emailservice.application.ports.out.EmailSenderPort;
@@ -20,11 +19,11 @@ import software.amazon.awssdk.services.ses.model.SesException;
 @Component
 public class AwsSesAdapter implements EmailSenderPort {
         private SesClient sesClient;
-        private String defaultSender;
+        private String awsVerifiedSender;
 
-        public AwsSesAdapter(SesClient sesClient, @Qualifier("awsDefaultSender") String defaultSender) {
+        public AwsSesAdapter(SesClient sesClient, String awsVerifiedSender) {
                 this.sesClient = sesClient;
-                this.defaultSender = defaultSender;
+                this.awsVerifiedSender = awsVerifiedSender;
         }
 
         @Override
@@ -53,7 +52,7 @@ public class AwsSesAdapter implements EmailSenderPort {
                 SendEmailRequest emailRequest = SendEmailRequest.builder()
                                 .destination(destination)
                                 .message(message)
-                                .source(defaultSender)
+                                .source(awsVerifiedSender)
                                 .build();
 
                 try {

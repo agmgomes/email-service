@@ -21,7 +21,7 @@ public class AwsSesConfig {
     private String awsSecretKey;
 
     @Value("${aws.verified.sender}")
-    private String defaultSender;
+    private String awsVerifiedSender;
 
     @Bean
     public SesClient sesClient() {
@@ -36,8 +36,8 @@ public class AwsSesConfig {
         return sesClient;
     }
 
-    @Bean(name = "awsDefaultSender")
+    @Bean
     public String awsDefaultSender() {
-        return defaultSender;
+        return awsVerifiedSender;
     }
 }
