@@ -9,7 +9,7 @@ as the database. The application follows a **Hexagonal Architecture** and suppor
 
 - Send emails through AWS SES.
 - Store email information in a PostgreSQL database.
-- Manage email statuses (e.g., PENDINT, SENT, FAILED).
+- Manage email statuses (e.g., PENDING, SENT, FAILED).
 - Support for scheduled emails using a cron job for periodic processing.
 - Integration with RabbitMQ for asynchronous processing.
 
